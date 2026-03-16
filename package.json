@@ -4,13 +4,14 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "server"
+    "server",
+    "client"
   ],
   "scripts": {
     "dev": "concurrently \"bun run client\" \"bun run server\"",
     "client": "bun --hot client/index.ts",
     "server": "cd server && bun run dev",
-    "build": "bun build ./client/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
+    "build": "bun build ./client/index.html --outdir=dist --sourcemap --target=browser --minify",
     "start": "NODE_ENV=production bun client/index.ts",
     "db:generate": "cd server && bunx drizzle-kit generate",
     "db:push": "cd server && bunx drizzle-kit push",
@@ -19,22 +20,9 @@
     "db:reset": "cd server && rm local.db && bun run db:push && bun run db:seed"
   },
   "dependencies": {
-    "@elysiajs/eden": "^1.4.8",
-    "big.js": "^7.0.1",
-    "concurrently": "^9.2.1",
-    "dayjs": "^1.11.20",
-    "drizzle-orm": "^0.45.1",
-    "elysia": "^1.4.27",
-    "framer-motion": "^12.36.0",
-    "react": "^19",
-    "react-dom": "^19",
-    "zustand": "^5.0.12"
+    "concurrently": "^9.2.1"
   },
   "devDependencies": {
-    "@types/big.js": "^6.2.2",
-    "@types/bun": "latest",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "drizzle-kit": "^0.31.9"
+    "@types/bun": "latest"
   }
 }

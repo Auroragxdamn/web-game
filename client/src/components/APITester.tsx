@@ -1,5 +1,5 @@
 import { useRef, type FormEvent } from "react";
-import { client } from "./eden";
+import { client } from "../eden";
 
 export function APITester() {
   const responseInputRef = useRef<HTMLTextAreaElement>(null);

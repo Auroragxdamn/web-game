@@ -20,9 +20,12 @@
     "db:reset": "cd server && rm local.db && bun run db:push && bun run db:seed"
   },
   "dependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "framer-motion": "^12.37.0",
+    "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
     "@types/bun": "latest"
   }
 }

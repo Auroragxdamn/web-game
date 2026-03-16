@@ -9,10 +9,10 @@
   ],
   "scripts": {
     "dev": "concurrently \"bun run client\" \"bun run server\"",
-    "client": "bun --hot client/index.ts",
+    "client": "cd client && bun run dev",
     "server": "cd server && bun run dev",
-    "build": "bun build ./client/index.html --outdir=dist --sourcemap --target=browser --minify",
-    "start": "NODE_ENV=production bun client/index.ts",
+    "build": "cd client && bun run build",
+    "start": "cd server && bun run start",
     "db:generate": "cd server && bunx drizzle-kit generate",
     "db:push": "cd server && bunx drizzle-kit push",
     "db:studio": "cd server && bunx drizzle-kit studio",

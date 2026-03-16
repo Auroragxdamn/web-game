@@ -5,8 +5,8 @@ This is a monorepo setup containing the `client` and `server` applications.
 
 ## Project Structure
 
-- `client/`: The frontend React application.
-- `server/`: The backend ElysiaJS API server.
+- `client/`: The frontend React application (Vite, Tailwind CSS v4, shadcn/ui).
+- `server/`: The backend ElysiaJS API server (SQLite, Drizzle ORM).
 
 ## Getting Started
 

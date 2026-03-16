@@ -6,7 +6,7 @@ const app = new Elysia()
   .use(cors())
   .use(api)
   .get("/ping", () => "pong 🏓")
-  .listen(3000);
+  .listen(3001);
 
 export type App = typeof app;
 

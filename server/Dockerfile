@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Setup a data directory for the SQLite database so it can be safely mounted as a volume
 RUN mkdir -p /app/data

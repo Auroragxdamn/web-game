@@ -2,6 +2,8 @@ FROM oven/bun:1-alpine AS builder
 WORKDIR /app
 
 # Copy everything
+COPY . .
+
 # Install dependencies (from root to respect workspaces)
 RUN bun install
 # Build the client

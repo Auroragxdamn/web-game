@@ -4,8 +4,8 @@ import { api } from "./routes/api";
 
 const app = new Elysia()
   .use(cors())
-  .get("/", () => "Hello Elysia")
   .use(api)
+  .get("/ping", () => "pong 🏓")
   .listen(3000);
 
 export type App = typeof app;

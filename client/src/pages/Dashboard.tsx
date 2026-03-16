@@ -1,6 +1,6 @@
 import { GoldCounter } from '../components/ui/dashboard/GoldCounter';
 import { EfficiencyStats } from '../components/ui/dashboard/EfficiencyStats';
-import { Link } from 'react-router-dom';
+import { api } from '@/lib/eden';
 
 interface DashboardProps {
     gold: number;
@@ -8,6 +8,30 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ gold, income }: DashboardProps) {
+
+    // 👇 The new Ping/Pong script using Eden
+    const handlePingBackend = async () => {
+        console.log("Pinging backend...");
+
+        try {
+            // Eden magic: type-safe fetch to your backend!
+            const { data, error } = await api.ping.get();
+
+            if (error) {
+                console.error("❌ Backend error:", error.status, error.value);
+                alert("Ping failed! Check the console.");
+                return;
+            }
+
+            console.log("✅ Success:", data);
+            alert(`Server responded: ${data}`);
+
+        } catch (err) {
+            console.error("❌ Network error:", err);
+            alert("Could not connect to the backend. Is it running?");
+        }
+    };
+
     return (
         <div className="min-h-[75vh] flex flex-col items-center justify-center space-y-12">
             {/* Üst Kısım: Altın Sayacı */}
@@ -28,12 +52,13 @@ export default function Dashboard({ gold, income }: DashboardProps) {
                     Project Stellar: Idle Deckbuilder
                 </p>
 
-                <Link
-                    to="/cards"
-                    className="inline-block px-12 py-4 bg-primary text-primary-foreground rounded-full font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/10 uppercase tracking-widest text-xs no-underline"
+                {/* 👇 Changed from <Link> to <button> and added the onClick handler */}
+                <button
+                    onClick={handlePingBackend}
+                    className="inline-block px-12 py-4 bg-primary text-primary-foreground rounded-full font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/10 uppercase tracking-widest text-xs border-none cursor-pointer"
                 >
-                    STRATEJİ BELİRLE
-                </Link>
+                    STRATEJİ BELİRLE (PİNG)
+                </button>
             </div>
         </div>
     );

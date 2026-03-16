@@ -64,7 +64,7 @@ export default function CardsPage({
           </h1>
           {!isLocked && (
             <p className="text-muted-foreground uppercase tracking-[0.25em] text-[12px] font-black italic mt-2 opacity-80">
-              AKTİF KONFİGÜRASYON ({selectedIds.length}/4)
+              AKTİF KONFİGURASYON ({selectedIds.length}/4)
             </p>
           )}
         </div>

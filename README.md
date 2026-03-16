@@ -1,21 +1,35 @@
-# bun-react-template
+# Web Game Monorepo
 
-To install dependencies:
+A fullstack web game built using Bun, ElysiaJS, React, and Drizzle ORM.
+This is a monorepo setup containing the `client` and `server` applications.
+
+## Project Structure
+
+- `client/`: The frontend React application.
+- `server/`: The backend ElysiaJS API server.
+
+## Getting Started
+
+To install all dependencies across the monorepo:
 
 ```bash
 bun install
 ```
 
-To start a development server:
+## Available Scripts (from Root)
 
-```bash
-bun dev
-```
+- `bun run dev`: Concurrently start both client and server in development mode.
+- `bun run client`: Start the client development server.
+- `bun run server`: Start the server development server.
+- `bun run build`: Build the client for production.
+- `bun run start`: Start the client using the built production assets.
 
-To run for production:
+### Database Scripts
 
-```bash
-bun start
-```
+These scripts manage the SQLite database via Drizzle ORM:
 
-This project was created using `bun init` in bun v1.3.10. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+- `bun run db:generate`: Generate Drizzle database migrations.
+- `bun run db:push`: Apply the Drizzle schema directly to the database.
+- `bun run db:studio`: Launch Drizzle Studio to inspect the database visually.
+- `bun run db:seed`: Seed the database with initial data.
+- `bun run db:reset`: Delete the local database, recreate it, and run the seeder.

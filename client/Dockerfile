@@ -1,14 +1,13 @@
-# Stage 1: Build
 FROM oven/bun:1 AS builder
 WORKDIR /app
 
-# 1. Copy everything so the client can see the server folder
+# 1. Copy everything (Root, Server, and Client)
 COPY . .
 
-# 2. Install everything at the root
+# 2. Install all dependencies
 RUN bun install
 
-# 3. Build the client
+# 3. Build the client (Skipping tsc via the package.json change above)
 WORKDIR /app/client
 RUN bun run build
 

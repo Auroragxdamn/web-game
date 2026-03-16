@@ -1,14 +1,20 @@
 FROM oven/bun:1-alpine AS builder
 WORKDIR /app
 
-# Copy everything
+# 1. Copy ONLY package files and lockfile first
+COPY package.json bun.lockb ./
+COPY client/package.json ./client/
+# Note: If you have a shared workspace (like packages/ui), copy its package.json here too:
+# COPY packages/ui/package.json ./packages/ui/
+
+# 2. Run a clean install
+RUN bun install
+
+# 3. NOW copy the rest of your source code
 COPY . .
 
-# Install dependencies (from root to respect workspaces)
-RUN bun install
-# Build the client
-WORKDIR /app/client
-RUN bun run build
+# 4. Build the client
+RUN bun run --cwd client build
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine

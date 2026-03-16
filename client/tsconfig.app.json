@@ -11,7 +11,8 @@
     /* Aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@server/*": ["../server/src/*"]
     },
 
     /* Bundler mode */

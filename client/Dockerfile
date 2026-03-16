@@ -1,20 +1,20 @@
-# Stage 1: Build the client
-FROM oven/bun:1-alpine AS builder
+# Stage 1: Build the client (Swapped from alpine to standard debian to fix Rolldown/Rust bindings)
+FROM oven/bun:1 AS builder
 WORKDIR /app
 
-# 1. Copy everything (Dokploy is already giving us the client folder contents)
+# 1. Copy everything
 COPY . .
 
 # 2. Install dependencies
 RUN bun install
 
-# 3. Build the client directly (No need for --cwd client, we are already here!)
+# 3. Build the client 
 RUN bun run build
 
-# Stage 2: Serve with Nginx
+# Stage 2: Serve with Nginx (Keep this as alpine so your final image is still tiny!)
 FROM nginx:alpine
 
-# 4. Copy the compiled dist folder (It is now at /app/dist, not /app/client/dist)
+# 4. Copy the compiled dist folder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 5. BULLETPROOF NGINX CONFIG

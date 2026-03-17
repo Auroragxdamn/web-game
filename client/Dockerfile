@@ -2,9 +2,15 @@
 FROM oven/bun:1 AS builder
 WORKDIR /app
 
-COPY . .
+COPY package.json bun.lock ./
+COPY client/package.json ./client/package.json
+COPY server/package.json ./server/package.json
+COPY packages/api/package.json ./packages/api/package.json
 
 RUN bun install
+
+COPY client ./client
+COPY packages/api ./packages/api
 
 WORKDIR /app/client
 RUN bun run build

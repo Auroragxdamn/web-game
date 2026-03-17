@@ -17,8 +17,8 @@ services:
       dockerfile: server/Dockerfile
     environment:
       PORT: 3000
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - server-data:/app/data
     restart: unless-stopped

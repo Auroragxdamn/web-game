@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import type { CardProps } from './components/ui/Card';
 import { ResourceBar } from './components/ui/dashboard/ResourceBar';
+import { SpotifyGamePlayer } from './components/spotify/SpotifyGamePlayer';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import CardsPage from './pages/CardsPage';
@@ -55,6 +56,10 @@ export default function App() {
         </nav>
 
         <div className="relative z-10 pt-24 px-6 md:px-12">
+          <div className="mb-10">
+            <SpotifyGamePlayer />
+          </div>
+
           <Routes>
             <Route path="/" element={<Dashboard gold={gold} income={currentIncome} />} />
             <Route path="/cards" element={

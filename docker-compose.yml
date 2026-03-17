@@ -7,6 +7,8 @@ services:
       dockerfile: client/Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL}
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
     expose:
       - "80"
     restart: unless-stopped
@@ -18,7 +20,11 @@ services:
       context: .
       dockerfile: server/Dockerfile
     environment:
-      PORT: 3000
+      PORT: ${PORT:-3000}
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+      SPOTIFY_REDIRECT_URI: ${SPOTIFY_REDIRECT_URI}
+      CLIENT_APP_URL: ${CLIENT_APP_URL}
     expose:
       - "3000"
     volumes:

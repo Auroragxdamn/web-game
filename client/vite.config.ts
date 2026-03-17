@@ -8,8 +8,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // Add this line to match your tsconfig
-      "@server": path.resolve(__dirname, "../server/src"),
     },
   },
 })

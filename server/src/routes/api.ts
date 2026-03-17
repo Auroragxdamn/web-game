@@ -1,9 +1,10 @@
-import { Elysia } from "elysia";
-import { usersRoute } from "./users/users.index";
-import { userCardsRoute } from "./userCards/userCards.index";
-import { cardsRoute } from "./cards/cards.index";
+import { createApiApp } from "@web-game/api";
+import { cardsService } from "./cards/cards.service";
+import { userCardsService } from "./userCards/userCards.service";
+import { usersService } from "./users/users.service";
 
-export const api = new Elysia()
-  .use(usersRoute)
-  .use(userCardsRoute)
-  .use(cardsRoute);
+export const api = createApiApp({
+  users: usersService,
+  cards: cardsService,
+  userCards: userCardsService,
+});

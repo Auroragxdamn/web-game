@@ -22,6 +22,8 @@ From the `client` directory, you can run:
 
 *(Alternatively, run `bun run client` or `bun run build` from the monorepo root).*
 
+By default, the frontend targets `http://localhost:3000` for the API. Set `VITE_API_URL` to point at a different backend in production.
+
 ## UI Components & Styling
 
 - **Styling**: Uses Tailwind CSS v4. Standard utility classes applies.

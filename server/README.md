@@ -19,6 +19,8 @@ bun run dev
 
 The server will be available at `http://localhost:3000`.
 
+In containers, the port can be overridden with the `PORT` environment variable.
+
 ## Database
 
 Drizzle queries and schema are located inside `src/db/`.

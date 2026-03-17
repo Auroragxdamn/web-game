@@ -22,7 +22,19 @@ bun install
 - `bun run client`: Start the client development server.
 - `bun run server`: Start the server development server.
 - `bun run build`: Build the client for production.
-- `bun run start`: Start the client using the built production assets.
+- `bun run start`: Start the server in production mode.
+
+## Runtime Defaults
+
+- Client dev server: `http://localhost:5173`
+- API server: `http://localhost:3000`
+- Override the frontend API target with `VITE_API_URL`.
+
+## Deployment
+
+- `docker-compose.yml` runs the client on port `80` and the API on port `3000`.
+- The server persists the SQLite database in the `server-data` Docker volume.
+- This layout is suitable for Dokploy as a compose-based deployment.
 
 ### Database Scripts
 

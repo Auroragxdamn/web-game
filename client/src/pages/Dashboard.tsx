@@ -1,5 +1,6 @@
 import { GoldCounter } from '../components/ui/dashboard/GoldCounter';
 import { EfficiencyStats } from '../components/ui/dashboard/EfficiencyStats';
+import { SpotifyGamePlayer } from '../components/spotify/SpotifyGamePlayer';
 import { api } from '@/lib/eden';
 
 interface DashboardProps {
@@ -40,6 +41,8 @@ export default function Dashboard({ gold, income }: DashboardProps) {
             </div>
 
             {/* Orta Kısım: Verimlilik İstatistikleri (3'lü Grid) */}
+            <SpotifyGamePlayer />
+
             <EfficiencyStats />
 
             {/* Alt Kısım: Hoş Geldin Metni ve Aksiyon Butonu */}

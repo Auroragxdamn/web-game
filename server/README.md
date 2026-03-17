@@ -20,6 +20,16 @@ bun run dev
 The server will be available at `http://localhost:3000`.
 
 In containers, the port can be overridden with the `PORT` environment variable.
+Spotify credentials are read from the monorepo root `.env` during local development.
+
+Required Spotify variables:
+
+```bash
+SPOTIFY_CLIENT_ID=your_spotify_client_id
+SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+SPOTIFY_REDIRECT_URI=http://localhost:3000/spotify/callback
+CLIENT_APP_URL=http://localhost:5173
+```
 
 ## Database
 

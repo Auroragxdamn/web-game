@@ -7,11 +7,12 @@
     "start": "bunx drizzle-kit push && NODE_ENV=production bun run src/index.ts"
   },
   "dependencies": {
-    "@web-game/api": "workspace:*",
     "@elysiajs/cors": "^1.4.1",
     "@libsql/client": "^0.17.0",
+    "@web-game/api": "workspace:*",
     "drizzle-orm": "^0.45.1",
-    "elysia": "^1.4.27"
+    "elysia": "^1.4.27",
+    "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {
     "bun-types": "latest",

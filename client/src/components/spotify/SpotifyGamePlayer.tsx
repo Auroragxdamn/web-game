@@ -278,10 +278,10 @@ export function SpotifyGamePlayer() {
       : "Spotify soundtrack offline";
 
   return (
-    <div className="fixed left-1/2 top-20 z-[1600] w-[min(92vw,28rem)] -translate-x-1/2">
+    <div className="pointer-events-none fixed left-1/2 top-20 z-[9998] w-[min(92vw,28rem)] -translate-x-1/2">
       <Popover.Root open={open} onOpenChange={setOpen}>
         <Popover.Trigger
-          className="group flex w-full items-center gap-3 rounded-full border border-white/35 bg-black/75 px-4 py-3 text-left text-white shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-2xl transition hover:bg-black/80"
+          className="pointer-events-auto group flex w-full items-center gap-3 rounded-full border border-white/35 bg-black/75 px-4 py-3 text-left text-white shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-2xl transition hover:bg-black/80"
         >
           <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${statusTone}`} />
           <span className="flex min-w-0 flex-1 items-center gap-3">
@@ -299,9 +299,14 @@ export function SpotifyGamePlayer() {
         </Popover.Trigger>
 
         <Popover.Portal>
-          <Popover.Positioner side="bottom" align="center" sideOffset={10}>
-            <Popover.Popup className="z-[2200] w-[min(92vw,28rem)] rounded-[1.75rem] border border-white/35 bg-[linear-gradient(180deg,rgba(17,17,17,0.94),rgba(34,10,22,0.92))] p-4 text-white shadow-[0_24px_80px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
-              <div className="flex flex-col gap-4">
+          <Popover.Positioner
+            side="bottom"
+            align="center"
+            sideOffset={10}
+            className="pointer-events-none z-[9999]"
+          >
+            <Popover.Popup className="pointer-events-auto box-border w-[min(92vw,28rem)] overflow-hidden rounded-[1.75rem] border border-white/35 bg-[linear-gradient(180deg,rgba(17,17,17,0.94),rgba(34,10,22,0.92))] p-4 text-white shadow-[0_24px_80px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
+              <div className="flex min-w-0 flex-col gap-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-[0.35em] text-white/55">
@@ -366,7 +371,7 @@ export function SpotifyGamePlayer() {
 
                 {session?.connected && (
                   <div className="grid gap-3">
-                    <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-3.5">
+                    <div className="min-w-0 rounded-[1.4rem] border border-white/10 bg-white/6 p-3.5">
                       <div className="flex flex-wrap gap-2">
                         <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white">
                           {session.profile.displayName}
@@ -380,7 +385,7 @@ export function SpotifyGamePlayer() {
                       </div>
                     </div>
 
-                    <div className="rounded-[1.4rem] border border-white/10 bg-black/20 p-3.5">
+                    <div className="min-w-0 rounded-[1.4rem] border border-white/10 bg-black/20 p-3.5">
                       <p className="text-[10px] font-black uppercase tracking-[0.32em] text-white/55">
                         Now Playing
                       </p>
@@ -409,8 +414,8 @@ export function SpotifyGamePlayer() {
                       )}
                     </div>
 
-                    <div className="grid gap-3 md:grid-cols-[0.9fr_1.1fr]">
-                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-3.5">
+                    <div className="grid min-w-0 gap-3 md:grid-cols-[0.9fr_1.1fr]">
+                      <div className="min-w-0 rounded-[1.4rem] border border-white/10 bg-white/6 p-3.5">
                         <p className="text-[10px] font-black uppercase tracking-[0.32em] text-white/55">
                           Top Artists
                         </p>
@@ -426,7 +431,7 @@ export function SpotifyGamePlayer() {
                         </div>
                       </div>
 
-                      <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-3.5">
+                      <div className="min-w-0 rounded-[1.4rem] border border-white/10 bg-white/6 p-3.5">
                         <p className="text-[10px] font-black uppercase tracking-[0.32em] text-white/55">
                           Top Tracks
                         </p>

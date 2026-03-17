@@ -35,3 +35,6 @@ CLIENT_APP_URL=http://localhost:5173
 
 Drizzle queries and schema are located inside `src/db/`.
 Use the `db:*` prefixed npm scripts from the monorepo root to manage schema generations, syncs, and seeding.
+For production, apply migrations with `bun run migrate` inside `server/` or `bun run db:migrate` from the monorepo root.
+The Docker container now boots with `bun run start:deploy`, which runs Drizzle migrations and then starts the API.
+Do not run `drizzle-kit push` on every container boot.

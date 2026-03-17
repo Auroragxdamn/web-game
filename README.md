@@ -59,7 +59,11 @@ Make sure the Spotify app redirect URI matches your deployed API callback URL as
 These scripts manage the SQLite database via Drizzle ORM:
 
 - `bun run db:generate`: Generate Drizzle database migrations.
+- `bun run db:migrate`: Apply generated migrations to the database.
 - `bun run db:push`: Apply the Drizzle schema directly to the database.
 - `bun run db:studio`: Launch Drizzle Studio to inspect the database visually.
 - `bun run db:seed`: Seed the database with initial data.
 - `bun run db:reset`: Delete the local database, recreate it, and run the seeder.
+
+For production, `bun run start` stays schema-free.
+The container entrypoint in Dokploy now uses `bun run start:deploy`, which applies Drizzle migrations first and then starts the API.

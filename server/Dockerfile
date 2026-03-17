@@ -20,4 +20,4 @@ WORKDIR /app/server
 RUN rm -f local.db && ln -sf /app/data/local.db local.db
 
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+CMD ["bun", "run", "start:deploy"]

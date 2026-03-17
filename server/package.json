@@ -4,7 +4,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
-    "start": "bunx drizzle-kit push && NODE_ENV=production bun run src/index.ts"
+    "start": "NODE_ENV=production bun run src/index.ts",
+    "migrate": "NODE_ENV=production bun run src/db/migrate.ts",
+    "start:deploy": "bun run migrate && bun run start"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.4.1",

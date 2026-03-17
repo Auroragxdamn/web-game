@@ -4,7 +4,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
-    "start": "NODE_ENV=production bun run src/index.ts"
+    "start": "bunx drizzle-kit push && NODE_ENV=production bun run src/index.ts"
   },
   "dependencies": {
     "@web-game/api": "workspace:*",

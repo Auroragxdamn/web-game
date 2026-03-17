@@ -2,6 +2,9 @@
 FROM oven/bun:1 AS builder
 WORKDIR /app
 
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+
 COPY package.json bun.lock ./
 COPY client/package.json ./client/package.json
 COPY server/package.json ./server/package.json

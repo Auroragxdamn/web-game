@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { Popover } from "@base-ui/react/popover";
+import { ChevronDown, Disc3, Play, Pause, Radio } from "lucide-react";
 import {
   getSpotifySdkToken,
   getSpotifySession,
@@ -47,6 +49,7 @@ const loadSpotifySdk = async () => {
 export function SpotifyGamePlayer() {
   const [session, setSession] = useState<SpotifySessionResponse | null>(null);
   const [status, setStatus] = useState<PlayerStatus>("idle");
+  const [open, setOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState("Connect Spotify to turn the game into a tailored soundtrack.");
   const [deviceId, setDeviceId] = useState<string | null>(null);
   const [playerState, setPlayerState] = useState<SpotifyPlayerState | null>(null);
@@ -262,155 +265,207 @@ export function SpotifyGamePlayer() {
   const topTracks = session?.connected ? session.taste.topTracks.slice(0, 3) : [];
   const topArtists = session?.connected ? session.taste.topArtists.slice(0, 4) : [];
   const currentTrack = playerState?.track_window.current_track;
+  const statusTone =
+    status === "ready"
+      ? "bg-emerald-400"
+      : status === "error"
+        ? "bg-red-400"
+        : "bg-amber-400";
+  const compactLabel = currentTrack
+    ? `${currentTrack.name} • ${currentTrack.artists.map((artist) => artist.name).join(" / ")}`
+    : session?.connected
+      ? "Spotify linked"
+      : "Spotify soundtrack offline";
 
   return (
-    <section className="w-full max-w-5xl rounded-[2rem] border border-primary/10 bg-white/70 p-6 shadow-2xl shadow-primary/5 backdrop-blur-xl md:p-8">
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-2xl">
-            <p className="mb-3 text-[11px] font-black uppercase tracking-[0.35em] text-primary/70">
-              Game Soundtrack
-            </p>
-            <h2 className="text-3xl font-black uppercase italic tracking-tight text-foreground md:text-4xl">
-              Spotify Taste Sync
-            </h2>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">{statusMessage}</p>
-          </div>
+    <div className="fixed left-1/2 top-20 z-[1200] w-[min(92vw,30rem)] -translate-x-1/2">
+      <Popover.Root open={open} onOpenChange={setOpen}>
+        <Popover.Trigger
+          className="group flex w-full items-center gap-3 rounded-full border border-white/35 bg-black/75 px-4 py-3 text-left text-white shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-2xl transition hover:bg-black/80"
+        >
+          <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${statusTone}`} />
+          <span className="flex min-w-0 flex-1 items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
+              {playerState?.paused ? <Pause className="h-4 w-4" /> : <Disc3 className="h-4 w-4" />}
+            </span>
+            <span className="min-w-0">
+              <span className="block text-[10px] font-black uppercase tracking-[0.35em] text-white/60">
+                Spotify Island
+              </span>
+              <span className="block truncate text-sm font-semibold">{compactLabel}</span>
+            </span>
+          </span>
+          <ChevronDown className={`h-4 w-4 shrink-0 transition ${open ? "rotate-180" : ""}`} />
+        </Popover.Trigger>
 
-          <div className="flex flex-wrap gap-3">
-            {session?.connected ? (
-              <>
-                <button
-                  onClick={() => void handlePlayTailoredMix()}
-                  disabled={!deviceId || isBusy || status !== "ready"}
-                  className="rounded-full bg-primary px-6 py-3 text-[11px] font-black uppercase tracking-[0.25em] text-primary-foreground transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {isBusy ? "Loading..." : "Play Tailored Mix"}
-                </button>
-                <button
-                  onClick={() => void handleTogglePlayback()}
-                  disabled={!playerState}
-                  className="rounded-full border border-primary/20 bg-white px-6 py-3 text-[11px] font-black uppercase tracking-[0.25em] text-foreground transition hover:border-primary/50 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {playerState?.paused ? "Resume" : "Pause"}
-                </button>
-                <button
-                  onClick={() => void handleLogout()}
-                  disabled={isBusy}
-                  className="rounded-full border border-foreground/10 bg-foreground px-6 py-3 text-[11px] font-black uppercase tracking-[0.25em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Disconnect
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={startSpotifyLogin}
-                className="rounded-full bg-primary px-6 py-3 text-[11px] font-black uppercase tracking-[0.25em] text-primary-foreground transition hover:scale-[1.02]"
-              >
-                Connect Spotify
-              </button>
-            )}
-          </div>
-        </div>
-
-        {session?.connected && (
-          <div className="grid gap-4 md:grid-cols-[1.3fr_1fr]">
-            <div className="rounded-[1.5rem] bg-gradient-to-br from-primary/12 via-white to-primary/5 p-5">
-              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-primary/70">
-                Listener Snapshot
-              </p>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <span className="rounded-full bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground shadow-sm">
-                  {session.profile.displayName}
-                </span>
-                <span className="rounded-full bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground shadow-sm">
-                  {session.profile.product}
-                </span>
-                <span className="rounded-full bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground shadow-sm">
-                  {session.taste.tailoredTrackUris.length} queued tracks
-                </span>
-              </div>
-
-              <div className="mt-5">
-                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-muted-foreground">
-                  Top Artists
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {topArtists.map((artist) => (
-                    <span
-                      key={artist.id}
-                      className="rounded-full border border-primary/10 bg-white/80 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-foreground"
-                    >
-                      {artist.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[1.5rem] border border-primary/10 bg-white/80 p-5">
-              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-primary/70">
-                Now Playing
-              </p>
-              {currentTrack ? (
-                <div className="mt-4 flex items-center gap-4">
-                  {currentTrack.album.images[0] ? (
-                    <img
-                      src={currentTrack.album.images[0].url}
-                      alt={currentTrack.name}
-                      className="h-16 w-16 rounded-2xl object-cover shadow-lg"
-                    />
-                  ) : null}
+        <Popover.Portal>
+          <Popover.Positioner sideOffset={12}>
+            <Popover.Popup className="w-[min(92vw,30rem)] rounded-[2rem] border border-white/35 bg-[linear-gradient(180deg,rgba(17,17,17,0.92),rgba(34,10,22,0.9))] p-5 text-white shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-2xl">
+              <div className="flex flex-col gap-5">
+                <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-lg font-black uppercase tracking-tight text-foreground">
-                      {currentTrack.name}
+                    <p className="text-[10px] font-black uppercase tracking-[0.35em] text-white/55">
+                      Floating Soundtrack
                     </p>
-                    <p className="mt-1 text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
-                      {currentTrack.artists.map((artist) => artist.name).join(" / ")}
-                    </p>
+                    <h2 className="mt-2 text-2xl font-black uppercase italic tracking-tight">
+                      Spotify Taste Sync
+                    </h2>
+                    <p className="mt-3 text-sm leading-6 text-white/70">{statusMessage}</p>
                   </div>
-                </div>
-              ) : (
-                <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                  Start the tailored mix and the active track will appear here.
-                </p>
-              )}
-            </div>
-          </div>
-        )}
 
-        {session?.connected && (
-          <div>
-            <p className="mb-4 text-[10px] font-black uppercase tracking-[0.35em] text-muted-foreground">
-              Top Short-Term Tracks
-            </p>
-            <div className="grid gap-3 md:grid-cols-3">
-              {topTracks.map((track) => (
-                <div
-                  key={track.id}
-                  className="flex items-center gap-4 rounded-[1.25rem] border border-primary/10 bg-white/85 p-4"
-                >
-                  {track.imageUrl ? (
-                    <img
-                      src={track.imageUrl}
-                      alt={track.name}
-                      className="h-14 w-14 rounded-2xl object-cover"
-                    />
-                  ) : null}
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-black uppercase tracking-tight text-foreground">
-                      {track.name}
-                    </p>
-                    <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                      {track.artists.join(" / ")}
-                    </p>
+                  <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[10px] font-black uppercase tracking-[0.28em] text-white/70">
+                    <Radio className="h-3.5 w-3.5" />
+                    {status}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
+
+                <div className="flex flex-wrap gap-3">
+                  {session?.connected ? (
+                    <>
+                      <button
+                        onClick={() => void handlePlayTailoredMix()}
+                        disabled={!deviceId || isBusy || status !== "ready"}
+                        className="rounded-full bg-white px-5 py-3 text-[11px] font-black uppercase tracking-[0.24em] text-black transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {isBusy ? "Loading..." : "Play Tailored Mix"}
+                      </button>
+                      <button
+                        onClick={() => void handleTogglePlayback()}
+                        disabled={!playerState}
+                        className="rounded-full border border-white/15 bg-white/8 px-5 py-3 text-[11px] font-black uppercase tracking-[0.24em] text-white transition hover:border-white/35 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {playerState?.paused ? (
+                          <span className="inline-flex items-center gap-2">
+                            <Play className="h-3.5 w-3.5" />
+                            Resume
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-2">
+                            <Pause className="h-3.5 w-3.5" />
+                            Pause
+                          </span>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => void handleLogout()}
+                        disabled={isBusy}
+                        className="rounded-full border border-white/15 bg-black/20 px-5 py-3 text-[11px] font-black uppercase tracking-[0.24em] text-white transition hover:border-white/35 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        Disconnect
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={startSpotifyLogin}
+                      className="rounded-full bg-white px-5 py-3 text-[11px] font-black uppercase tracking-[0.24em] text-black transition hover:scale-[1.02]"
+                    >
+                      Connect Spotify
+                    </button>
+                  )}
+                </div>
+
+                {session?.connected && (
+                  <div className="grid gap-4">
+                    <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+                      <p className="text-[10px] font-black uppercase tracking-[0.32em] text-white/55">
+                        Listener Snapshot
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                          {session.profile.displayName}
+                        </span>
+                        <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                          {session.profile.product}
+                        </span>
+                        <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                          {session.taste.tailoredTrackUris.length} queued tracks
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
+                      <p className="text-[10px] font-black uppercase tracking-[0.32em] text-white/55">
+                        Now Playing
+                      </p>
+                      {currentTrack ? (
+                        <div className="mt-4 flex items-center gap-4">
+                          {currentTrack.album.images[0] ? (
+                            <img
+                              src={currentTrack.album.images[0].url}
+                              alt={currentTrack.name}
+                              className="h-14 w-14 rounded-2xl object-cover shadow-lg"
+                            />
+                          ) : null}
+                          <div className="min-w-0">
+                            <p className="truncate text-base font-black uppercase tracking-tight">
+                              {currentTrack.name}
+                            </p>
+                            <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.18em] text-white/60">
+                              {currentTrack.artists.map((artist) => artist.name).join(" / ")}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="mt-4 text-sm leading-6 text-white/65">
+                          Start the tailored mix and the active track will appear here.
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-[1fr_1.1fr]">
+                      <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.32em] text-white/55">
+                          Top Artists
+                        </p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {topArtists.map((artist) => (
+                            <span
+                              key={artist.id}
+                              className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white"
+                            >
+                              {artist.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.32em] text-white/55">
+                          Top Tracks
+                        </p>
+                        <div className="mt-4 grid gap-3">
+                          {topTracks.map((track) => (
+                            <div
+                              key={track.id}
+                              className="flex items-center gap-3 rounded-[1.25rem] border border-white/10 bg-black/20 p-3"
+                            >
+                              {track.imageUrl ? (
+                                <img
+                                  src={track.imageUrl}
+                                  alt={track.name}
+                                  className="h-12 w-12 rounded-2xl object-cover"
+                                />
+                              ) : null}
+                              <div className="min-w-0">
+                                <p className="truncate text-sm font-black uppercase tracking-tight text-white">
+                                  {track.name}
+                                </p>
+                                <p className="mt-1 truncate text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">
+                                  {track.artists.join(" / ")}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
+      </Popover.Root>
+    </div>
   );
 }

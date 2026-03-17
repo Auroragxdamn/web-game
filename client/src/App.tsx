@@ -55,11 +55,9 @@ export default function App() {
           <ResourceBar />
         </nav>
 
-        <div className="relative z-10 pt-24 px-6 md:px-12">
-          <div className="mb-10">
-            <SpotifyGamePlayer />
-          </div>
+        <SpotifyGamePlayer />
 
+        <div className="relative z-10 pt-24 px-6 md:px-12">
           <Routes>
             <Route path="/" element={<Dashboard gold={gold} income={currentIncome} />} />
             <Route path="/cards" element={
